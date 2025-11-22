@@ -1,126 +1,126 @@
 # Audio Gear Catalog
 
-Aplikacja webowa do przeglądania i zakupu sprzętu audio - sklep internetowy. Projekt zrealizowany w ramach przedmiotu Aplikacje Internetowe 2.
+A web application for browsing and purchasing audio equipment - an online store. Project developed as part of the Internet Applications 2 course.
 
-![Strona główna](home_page.png)
+![Home page](home_page.png)
 
-## Spis treści
+## Table of Contents
 
-- [Architektura](#architektura)
-- [Funkcjonalności](#funkcjonalności)
-- [Technologie](#technologie)
-- [Instalacja i uruchomienie](#instalacja-i-uruchomienie)
-- [Użytkownicy testowi](#użytkownicy-testowi)
+- [Architecture](#architecture)
+- [Features](#features)
+- [Technologies](#technologies)
+- [Installation and Setup](#installation-and-setup)
+- [Test Users](#test-users)
 - [API Documentation](#api-documentation)
-- [Zrzuty ekranu](#zrzuty-ekranu)
+- [Screenshots](#screenshots)
 
-## Architektura
+## Architecture
 
-Projekt składa się z dwóch głównych komponentów:
+The project consists of two main components:
 
 ### Backend (FastAPI + SQLAlchemy)
 ```
 backend/
 ├── app/
-│   ├── main.py           # Główny plik aplikacji, konfiguracja CORS, inicjalizacja DB
-│   ├── models.py         # Modele ORM (User, GearItem, CartItem)
-│   ├── schemas.py        # Schematy Pydantic do walidacji
-│   ├── auth.py           # Autentykacja JWT, logowanie/rejestracja
-│   ├── db.py             # Konfiguracja połączenia z bazą danych
-│   ├── docs.py           # Metadata dla dokumentacji API
+│   ├── main.py           # Main application file, CORS configuration, DB initialization
+│   ├── models.py         # ORM models (User, GearItem, CartItem)
+│   ├── schemas.py        # Pydantic schemas for validation
+│   ├── auth.py           # JWT authentication, login/registration
+│   ├── db.py             # Database connection configuration
+│   ├── docs.py           # Metadata for API documentation
 │   └── routes/
-│       ├── catalog.py    # Endpointy katalogu produktów
-│       ├── cart.py       # Zarządzanie koszykiem
-│       └── admin.py      # Panel administracyjny
+│       ├── catalog.py    # Product catalog endpoints
+│       ├── cart.py       # Cart management
+│       └── admin.py      # Admin panel
 └── requirements.txt
 ```
 
-**Baza danych**: SQLite (`app.db`) z automatycznym seedowaniem danych
+**Database**: SQLite (`app.db`) with automatic data seeding
 
-**Autoryzacja**: JWT tokens z hasłami hashowanymi przez bcrypt
+**Authorization**: JWT tokens with bcrypt hashed passwords
 
-**API**: RESTful z pełną dokumentacją OpenAPI/Swagger
+**API**: RESTful with full OpenAPI/Swagger documentation
 
 ### Frontend (React + TypeScript + Vite)
 ```
 frontend/
 ├── src/
-│   ├── main.tsx          # Entry point aplikacji
-│   ├── App.tsx           # Routing i główny widok katalogu
-│   ├── Header.tsx        # Nawigacja i info o użytkowniku
-│   ├── Login.tsx         # Formularz logowania
-│   ├── Register.tsx      # Formularz rejestracji
-│   ├── ProductDetail.tsx # Szczegóły produktu
-│   ├── Cart.tsx          # Widok koszyka
-│   ├── AdminPanel.tsx    # Panel administracyjny
-│   ├── api.ts            # Funkcje do komunikacji z API
-│   ├── cart.ts           # Zarządzanie stanem koszyka
-│   └── images.ts         # Mapowanie zdjęć produktów
-├── attachments/          # Zdjęcia produktów
+│   ├── main.tsx          # Application entry point
+│   ├── App.tsx           # Routing and main catalog view
+│   ├── Header.tsx        # Navigation and user info
+│   ├── Login.tsx         # Login form
+│   ├── Register.tsx      # Registration form
+│   ├── ProductDetail.tsx # Product details
+│   ├── Cart.tsx          # Cart view
+│   ├── AdminPanel.tsx    # Admin panel
+│   ├── api.ts            # API communication functions
+│   ├── cart.ts           # Cart state management
+│   └── images.ts         # Product image mapping
+├── attachments/          # Product images
 └── package.json
 ```
 
-**Style**: Inline CSS z responsywnym designem
+**Styling**: Inline CSS with responsive design
 
-**Stan**: React hooks (useState, useEffect) + localStorage dla koszyka
+**State**: React hooks (useState, useEffect) + localStorage for cart
 
-## Funkcjonalności
+## Features
 
-### Dla wszystkich użytkowników:
-- Przeglądanie katalogu sprzętu audio z filtrowaniem po kategorii (mikrofonы, słuchawki, interfejsy)
-- Wyszukiwanie produktów po nazwie
-- Szczegółowe informacje o produktach (opis, cena, ocena, dostępność, galeria zdjęć)
-- Koszyk zakupowy z persistencją w localStorage
+### For all users:
+- Browse audio equipment catalog with category filtering (microphones, headphones, interfaces)
+- Search products by name
+- Detailed product information (description, price, rating, availability, image gallery)
+- Shopping cart with localStorage persistence
 
-### Dla zalogowanych użytkowników:
-- Rejestracja i logowanie z autoryzacją JWT
-- Finalizacja zamówienia (złożenie zamówienia z produktów w koszyku)
-- Historia zamówień
+### For logged-in users:
+- Registration and login with JWT authorization
+- Order checkout (placing orders from cart products)
+- Order history
 
-### Dla administratorów:
-- Dodawanie nowych produktów
-- Edycja istniejących produktów
-- Usuwanie produktów
-- Zarządzanie użytkownikami (nadawanie uprawnień admina)
-- Przeglądanie wszystkich zamówień użytkowników
+### For administrators:
+- Adding new products
+- Editing existing products
+- Deleting products
+- User management (granting admin privileges)
+- Viewing all user orders
 
-![Panel administracyjny](admin_panel.png)
+![Admin panel](admin_panel.png)
 
-## Technologie
+## Technologies
 
 ### Backend:
-- **FastAPI** 0.115.2 - nowoczesny framework webowy
-- **SQLAlchemy** 2.0.36 - ORM do zarządzania bazą danych
-- **Uvicorn** - serwer ASGI
-- **python-jose** - obsługa JWT tokens
-- **passlib[bcrypt]** - hashowanie haseł
-- **SQLite** - baza danych
+- **FastAPI** 0.115.2 - modern web framework
+- **SQLAlchemy** 2.0.36 - ORM for database management
+- **Uvicorn** - ASGI server
+- **python-jose** - JWT token handling
+- **passlib[bcrypt]** - password hashing
+- **SQLite** - database
 
 ### Frontend:
-- **React** 18.3.1 - biblioteka UI
-- **TypeScript** 5.5.4 - typowany JavaScript
-- **Vite** 5.4.8 - szybki build tool
-- **React Router** - routing (zaimplementowany ręcznie)
+- **React** 18.3.1 - UI library
+- **TypeScript** 5.5.4 - typed JavaScript
+- **Vite** 5.4.8 - fast build tool
+- **React Router** - routing (manually implemented)
 
-## Instalacja i uruchomienie
+## Installation and Setup
 
-### Wymagania:
+### Requirements:
 - Python 3.11+
-- Node.js 18+ i npm
+- Node.js 18+ and npm
 
 ### Backend
 
-1. Przejdź do katalogu backend:
+1. Navigate to the backend directory:
 ```bash
 cd backend
 ```
 
-2. Utwórz wirtualne środowisko Python:
+2. Create a Python virtual environment:
 ```bash
 python -m venv venv
 ```
 
-3. Aktywuj środowisko:
+3. Activate the environment:
 - **Windows:**
   ```bash
   venv\Scripts\activate
@@ -130,118 +130,118 @@ python -m venv venv
   source venv/bin/activate
   ```
 
-4. Zainstaluj zależności:
+4. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-5. Uruchom serwer (z katalogu głównego projektu):
+5. Start the server (from the main project directory):
 ```bash
 uvicorn backend.app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-Backend będzie dostępny pod adresem: `http://localhost:8000`
+Backend will be available at: `http://localhost:8000`
 
 API Documentation (Swagger): `http://localhost:8000/docs`
 
 ### Frontend
 
-1. Przejdź do katalogu frontend:
+1. Navigate to the frontend directory:
 ```bash
 cd frontend
 ```
 
-2. Zainstaluj zależności:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Uruchom serwer deweloperski:
+3. Start the development server:
 ```bash
 npm run dev
 ```
 
-Frontend będzie dostępny pod adresem: `http://localhost:5173`
+Frontend will be available at: `http://localhost:5173`
 
-### Build produkcyjny
+### Production Build
 
-Aby zbudować wersję produkcyjną frontendu:
+To build the production version of the frontend:
 ```bash
 cd frontend
 npm run build
 ```
 
-Zbudowana aplikacja znajdzie się w folderze `frontend/dist` i będzie automatycznie serwowana przez backend FastAPI.
+The built application will be in the `frontend/dist` folder and will be automatically served by the FastAPI backend.
 
-## Użytkownicy testowi
+## Test Users
 
-Po pierwszym uruchomieniu backend automatycznie utworzy konto administratora oraz kilku użytkowników testowych:
+After the first run, the backend automatically creates an administrator account and several test users:
 
 ### Administrator:
-- **Login:** `admin`
-- **Hasło:** `admin`
+- **Username:** `admin`
+- **Password:** `admin`
 
-### Użytkownicy testowi:
+### Test Users:
 - **user1** / `password1`
 - **user2** / `password2`
 - **testuser** / `test123`
 - **jankowalski** / `kowalski123`
 - **annanowak** / `nowak456`
-- **testadmin** / `admin123` (ma uprawnienia admina)
+- **testadmin** / `admin123` (has admin privileges)
 
 ## API Documentation
 
-Backend udostępnia interaktywną dokumentację API:
+The backend provides interactive API documentation:
 
 - **Swagger UI:** `http://localhost:8000/docs`
 - **ReDoc:** `http://localhost:8000/redoc`
 
-![Dokumentacja API](swagger.png)
+![API Documentation](swagger.png)
 
-### Główne endpointy:
+### Main endpoints:
 
-#### Autoryzacja:
-- `POST /auth/register` - Rejestracja nowego użytkownika
-- `POST /auth/login` - Logowanie (zwraca JWT token)
-- `GET /auth/me` - Informacje o zalogowanym użytkowniku
+#### Authentication:
+- `POST /auth/register` - Register new user
+- `POST /auth/login` - Login (returns JWT token)
+- `GET /auth/me` - Information about logged-in user
 
-#### Katalog:
-- `GET /api/catalog/items` - Lista wszystkich produktów
-- `GET /api/catalog/items/{id}` - Szczegóły produktu
-- `GET /api/catalog/categories` - Lista dostępnych kategorii
+#### Catalog:
+- `GET /api/catalog/items` - List of all products
+- `GET /api/catalog/items/{id}` - Product details
+- `GET /api/catalog/categories` - List of available categories
 
-#### Koszyk:
-- `GET /api/cart` - Zawartość koszyka zalogowanego użytkownika
-- `POST /api/cart/add` - Dodaj produkt do koszyka
-- `PUT /api/cart/update/{item_id}` - Aktualizuj ilość produktu
-- `DELETE /api/cart/remove/{item_id}` - Usuń produkt z koszyka
-- `POST /api/cart/checkout` - Finalizuj zamówienie
+#### Cart:
+- `GET /api/cart` - Contents of logged-in user's cart
+- `POST /api/cart/add` - Add product to cart
+- `PUT /api/cart/update/{item_id}` - Update product quantity
+- `DELETE /api/cart/remove/{item_id}` - Remove product from cart
+- `POST /api/cart/checkout` - Finalize order
 
-#### Admin (wymaga uprawnień administratora):
-- `POST /api/admin/items` - Dodaj nowy produkt
-- `PUT /api/admin/items/{id}` - Edytuj produkt
-- `DELETE /api/admin/items/{id}` - Usuń produkt
-- `GET /api/admin/users` - Lista wszystkich użytkowników
-- `PUT /api/admin/users/{id}/admin` - Zmień uprawnienia użytkownika
-- `GET /api/admin/orders` - Lista wszystkich zamówień
+#### Admin (requires administrator privileges):
+- `POST /api/admin/items` - Add new product
+- `PUT /api/admin/items/{id}` - Edit product
+- `DELETE /api/admin/items/{id}` - Delete product
+- `GET /api/admin/users` - List of all users
+- `PUT /api/admin/users/{id}/admin` - Change user privileges
+- `GET /api/admin/orders` - List of all orders
 
-## 📸 Zrzuty ekranu
+## 📸 Screenshots
 
-### Strona główna z katalogiem produktów
-![Strona główna](home_page.png)
+### Home page with product catalog
+![Home page](home_page.png)
 
-### Koszyk zakupowy
-![Koszyk](cart.png)
+### Shopping cart
+![Cart](cart.png)
 
-### Panel administracyjny
-![Panel administracyjny](admin_panel.png)
+### Admin panel
+![Admin panel](admin_panel.png)
 
-### Dokumentacja API (Swagger)
+### API Documentation (Swagger)
 ![Swagger](swagger.png)
 
-## Struktura bazy danych
+## Database Structure
 
-### Tabele:
+### Tables:
 
 **users**
 - `id` - PRIMARY KEY
@@ -266,14 +266,14 @@ Backend udostępnia interaktywną dokumentację API:
 - `quantity`
 - `is_ordered` - BOOLEAN
 
-## Bezpieczeństwo
+## Security
 
-- Hasła są hashowane przy użyciu bcrypt
-- Autentykacja oparta na JWT tokens
-- CORS skonfigurowany dla lokalnego developmentu
-- Endpointy administracyjne chronione weryfikacją uprawnień
-- Walidacja danych wejściowych przez Pydantic schemas
+- Passwords are hashed using bcrypt
+- JWT token-based authentication
+- CORS configured for local development
+- Admin endpoints protected with privilege verification
+- Input data validation through Pydantic schemas
 
-## Licencja
+## License
 
-Projekt edukacyjny - Aplikacje Internetowe 2, 2025
+Educational project - Internet Applications 2, 2025
