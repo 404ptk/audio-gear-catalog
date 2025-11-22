@@ -1,10 +1,10 @@
-# 🎵 Audio Gear Catalog
+# Audio Gear Catalog
 
-Aplikacja webowa do przeglądania i zakupu sprzętu audio - mikrofony, słuchawki i interfejsy audio. Projekt zrealizowany w ramach przedmiotu Aplikacje Internetowe 2.
+Aplikacja webowa do przeglądania i zakupu sprzętu audio - sklep internetowy. Projekt zrealizowany w ramach przedmiotu Aplikacje Internetowe 2.
 
 ![Strona główna](home_page.png)
 
-## 📋 Spis treści
+## Spis treści
 
 - [Architektura](#architektura)
 - [Funkcjonalności](#funkcjonalności)
@@ -14,7 +14,7 @@ Aplikacja webowa do przeglądania i zakupu sprzętu audio - mikrofony, słuchawk
 - [API Documentation](#api-documentation)
 - [Zrzuty ekranu](#zrzuty-ekranu)
 
-## 🏗️ Architektura
+## Architektura
 
 Projekt składa się z dwóch głównych komponentów:
 
@@ -64,29 +64,29 @@ frontend/
 
 **Stan**: React hooks (useState, useEffect) + localStorage dla koszyka
 
-## ✨ Funkcjonalności
+## Funkcjonalności
 
 ### Dla wszystkich użytkowników:
-- 📱 Przeglądanie katalogu sprzętu audio z filtrowaniem po kategorii (mikrofonы, słuchawki, interfejsy)
-- 🔍 Wyszukiwanie produktów po nazwie
-- 📄 Szczegółowe informacje o produktach (opis, cena, ocena, dostępność, galeria zdjęć)
-- 🛒 Koszyk zakupowy z persistencją w localStorage
+- Przeglądanie katalogu sprzętu audio z filtrowaniem po kategorii (mikrofonы, słuchawki, interfejsy)
+- Wyszukiwanie produktów po nazwie
+- Szczegółowe informacje o produktach (opis, cena, ocena, dostępność, galeria zdjęć)
+- Koszyk zakupowy z persistencją w localStorage
 
 ### Dla zalogowanych użytkowników:
-- 🔐 Rejestracja i logowanie z autoryzacją JWT
-- ✅ Finalizacja zamówienia (złożenie zamówienia z produktów w koszyku)
-- 📊 Historia zamówień
+- Rejestracja i logowanie z autoryzacją JWT
+- Finalizacja zamówienia (złożenie zamówienia z produktów w koszyku)
+- Historia zamówień
 
 ### Dla administratorów:
-- ➕ Dodawanie nowych produktów
-- ✏️ Edycja istniejących produktów
-- 🗑️ Usuwanie produktów
-- 👥 Zarządzanie użytkownikami (nadawanie uprawnień admina)
-- 📦 Przeglądanie wszystkich zamówień użytkowników
+- Dodawanie nowych produktów
+- Edycja istniejących produktów
+- Usuwanie produktów
+- Zarządzanie użytkownikami (nadawanie uprawnień admina)
+- Przeglądanie wszystkich zamówień użytkowników
 
 ![Panel administracyjny](admin_panel.png)
 
-## 🛠️ Technologie
+## Technologie
 
 ### Backend:
 - **FastAPI** 0.115.2 - nowoczesny framework webowy
@@ -102,7 +102,7 @@ frontend/
 - **Vite** 5.4.8 - szybki build tool
 - **React Router** - routing (zaimplementowany ręcznie)
 
-## 🚀 Instalacja i uruchomienie
+## Instalacja i uruchomienie
 
 ### Wymagania:
 - Python 3.11+
@@ -173,7 +173,7 @@ npm run build
 
 Zbudowana aplikacja znajdzie się w folderze `frontend/dist` i będzie automatycznie serwowana przez backend FastAPI.
 
-## 👥 Użytkownicy testowi
+## Użytkownicy testowi
 
 Po pierwszym uruchomieniu backend automatycznie utworzy konto administratora oraz kilku użytkowników testowych:
 
@@ -189,7 +189,7 @@ Po pierwszym uruchomieniu backend automatycznie utworzy konto administratora ora
 - **annanowak** / `nowak456`
 - **testadmin** / `admin123` (ma uprawnienia admina)
 
-## 📚 API Documentation
+## API Documentation
 
 Backend udostępnia interaktywną dokumentację API:
 
@@ -239,7 +239,7 @@ Backend udostępnia interaktywną dokumentację API:
 ### Dokumentacja API (Swagger)
 ![Swagger](swagger.png)
 
-## 📝 Struktura bazy danych
+## Struktura bazy danych
 
 ### Tabele:
 
@@ -266,7 +266,7 @@ Backend udostępnia interaktywną dokumentację API:
 - `quantity`
 - `is_ordered` - BOOLEAN
 
-## 🔐 Bezpieczeństwo
+## Bezpieczeństwo
 
 - Hasła są hashowane przy użyciu bcrypt
 - Autentykacja oparta na JWT tokens
@@ -274,10 +274,6 @@ Backend udostępnia interaktywną dokumentację API:
 - Endpointy administracyjne chronione weryfikacją uprawnień
 - Walidacja danych wejściowych przez Pydantic schemas
 
-## 📄 Licencja
+## Licencja
 
 Projekt edukacyjny - Aplikacje Internetowe 2, 2025
-
-## 👨‍💻 Autor
-
-Projekt zrealizowany w ramach przedmiotu Aplikacje Internetowe 2
