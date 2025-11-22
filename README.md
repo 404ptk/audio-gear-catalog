@@ -1,6 +1,6 @@
 # Audio Gear Catalog
 
-A web application for browsing and purchasing audio equipment - an online store. Project developed as part of the Internet Applications 2 course.
+A web application for browsing and purchasing audio equipment - an online store. University project.
 
 ![Home page](home_page.png)
 
@@ -276,4 +276,4 @@ The backend provides interactive API documentation:
 
 ## License
 
-Educational project - Internet Applications 2, 2025
+Educational project.
