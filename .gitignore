@@ -1,0 +1,18 @@
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+*.swp
+*.swo
+*~
+Thumbs.db
+
+# Local informacje folder (może zawierać dokumenty projektowe)
+informacje/
+
+# Environment variables
+.env
+.env.local
+
+# Logs
+*.log
