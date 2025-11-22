@@ -1,9 +1,9 @@
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, Union
 from datetime import datetime, timedelta
 
 from fastapi import Depends, HTTPException, status, APIRouter
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy import select, func
@@ -20,7 +20,10 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 # Use pbkdf2_sha256 to avoid bcrypt backend issues on some platforms
 pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+
+# Multiple authentication schemes
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token", auto_error=False)
+http_bearer = HTTPBearer(auto_error=False)
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -48,19 +51,40 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
     return encoded_jwt
 
 
-async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
+def verify_token(token: str) -> Optional[str]:
+    """Verify JWT token and return username if valid"""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str | None = payload.get("sub")
+        return username
+    except JWTError:
+        return None
+
+
+async def get_current_user(
+    oauth2_token: Optional[str] = Depends(oauth2_scheme),
+    http_auth: Optional[HTTPAuthorizationCredentials] = Depends(http_bearer)
+) -> User:
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str | None = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-    except JWTError:
+    
+    # Try OAuth2 token first, then HTTP Bearer
+    token = None
+    if oauth2_token:
+        token = oauth2_token
+    elif http_auth:
+        token = http_auth.credentials
+    
+    if not token:
         raise credentials_exception
+    
+    username = verify_token(token)
+    if not username:
+        raise credentials_exception
+        
     with SessionLocal() as db:
         user_in_db = db.execute(select(UserORM).where(UserORM.username == username)).scalar_one_or_none()
         if user_in_db is None:
@@ -85,10 +109,16 @@ Authenticate a user and receive a JWT access token for subsequent requests.
 - **Username:** `admin`
 - **Password:** `admin`
 
-### Usage
+### Usage Options
+**Option 1: Use username/password form (automatic)**
 1. Enter credentials in the form
-2. Receive JWT token in response
-3. Click **Authorize** button (🔒) at the top
+2. Click **Authorize** in Swagger UI
+3. Use the username/password fields
+
+**Option 2: Use token directly**
+1. Get token from this endpoint
+2. Click **Authorize** in Swagger UI  
+3. Select "BearerAuth (http, Bearer)" 
 4. Enter: `Bearer YOUR_TOKEN_HERE`
     """,
     response_description="JWT access token",

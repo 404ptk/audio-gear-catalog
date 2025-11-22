@@ -16,3 +16,17 @@ informacje/
 
 # Logs
 *.log
+
+# LaTeX documentation files
+docs/
+*.aux
+*.log
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.synctex.gz
+*.bbl
+*.blg
+*.bcf
+*.run.xml

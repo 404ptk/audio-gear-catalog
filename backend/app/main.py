@@ -18,11 +18,46 @@ from .routes.catalog import router as catalog_router
 from .routes.cart import router as cart_router
 from .routes.admin import router as admin_router
 
-# Create FastAPI app with metadata
+# Create FastAPI app with metadata and custom security schemes
 app = FastAPI(
     **API_METADATA,
     openapi_tags=OPENAPI_TAGS,
+    swagger_ui_parameters={
+        "persistAuthorization": True,
+        "displayRequestDuration": True,
+        "filter": True,
+    }
 )
+
+# Custom OpenAPI configuration for multiple auth schemes
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    
+    from fastapi.openapi.utils import get_openapi
+    
+    openapi_schema = get_openapi(
+        title=API_METADATA["title"],
+        version=API_METADATA["version"],
+        description=API_METADATA["description"],
+        routes=app.routes,
+        tags=OPENAPI_TAGS,
+    )
+    
+    # Add custom security schemes
+    openapi_schema["components"]["securitySchemes"] = {
+        "BearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT",
+            "description": "Enter your JWT token (Bearer prefix will be added automatically)"
+        }
+    }
+    
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi
 
 # CORS for local frontend (Vite default port)
 app.add_middleware(
