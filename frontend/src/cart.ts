@@ -1,6 +1,6 @@
 // Cart functionality with localStorage persistence and backend sync for logged-in users
 
-import { getAuthToken, getCartFromAPI, addToCartAPI, updateCartItemAPI, removeFromCartAPI, clearCartAPI } from './api'
+import { getAuthToken, getCartFromAPI, addToCartAPI, updateCartItemAPI, removeFromCartAPI, clearCartAPI, clearAuthToken } from './api'
 
 export interface CartItem {
   id: number
@@ -76,7 +76,11 @@ export async function getCart(): Promise<CartItem[]> {
         cart_item_id: item.id
       }))
     } catch (error) {
-      console.error('Failed to load cart from backend:', error)
+      console.error('Failed to load cart from backend (possibly invalid token), using localStorage:', error)
+      // If backend fails (e.g. 401 Unauthorized), clear the invalid token and use local storage
+      if (error instanceof Error && error.message.includes('Failed to load cart')) {
+        clearAuthToken()
+      }
       return getLocalCart()
     }
   }
@@ -99,12 +103,12 @@ export async function addToCart(item: Omit<CartItem, 'quantity' | 'cart_item_id'
         cart_item_id: item.id
       }))
     } catch (error) {
-      console.error('Failed to add to backend cart:', error)
-      // Fallback to local
+      console.error('Failed to add to backend cart, falling back to localStorage:', error)
+      // Fall through to local cart logic below
     }
   }
   
-  // Local cart logic
+  // Local cart logic (for non-logged users or when backend fails)
   const cart = getLocalCart()
   const existing = cart.find(c => c.id === item.id)
   

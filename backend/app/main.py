@@ -46,13 +46,33 @@ def custom_openapi():
     
     # Add custom security schemes
     openapi_schema["components"]["securitySchemes"] = {
+        "OAuth2PasswordBearer": {
+            "type": "oauth2",
+            "flows": {
+                "password": {
+                    "tokenUrl": "/auth/token",
+                    "scopes": {}
+                }
+            },
+            "description": "Login with username/password - Swagger will automatically manage the token"
+        },
         "BearerAuth": {
             "type": "http",
             "scheme": "bearer",
             "bearerFormat": "JWT",
-            "description": "Enter your JWT token (Bearer prefix will be added automatically)"
+            "description": "Enter ONLY your JWT token (without 'Bearer' prefix - it will be added automatically)"
         }
     }
+    
+    # Update all paths to accept both authentication schemes
+    for path_data in openapi_schema.get("paths", {}).values():
+        for operation in path_data.values():
+            if isinstance(operation, dict) and "security" in operation:
+                # Replace default security with both schemes
+                operation["security"] = [
+                    {"OAuth2PasswordBearer": []},
+                    {"BearerAuth": []}
+                ]
     
     app.openapi_schema = openapi_schema
     return app.openapi_schema
