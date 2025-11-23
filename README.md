@@ -259,41 +259,6 @@ To test protected endpoints in Swagger UI:
 - `DELETE /api/admin/users/{id}` - Delete user
 - `GET /api/admin/orders` - List of all orders
 
-## Project Documentation
-
-Comprehensive project documentation (in Polish) is available in the `docs/` directory:
-
-### LaTeX Documentation
-- **File:** `docs/dokumentacja.tex`
-- **Format:** LaTeX source file
-- **Language:** Polish
-
-**Documentation Contents:**
-1. Introduction and project goals
-2. System architecture (REST API, SPA, SFWP)
-3. Swagger/OpenAPI documentation implementation
-4. Backend implementation details (FastAPI, SQLAlchemy, JWT)
-5. Frontend implementation details (React, TypeScript)
-6. Admin panel functionality
-7. Database schema and models
-8. Testing and deployment instructions
-9. Technical summary and conclusions
-
-**To compile the documentation:**
-```bash
-cd docs
-pdflatex dokumentacja.tex
-pdflatex dokumentacja.tex  # Run twice for proper references
-```
-
-**Requirements for compilation:**
-- LaTeX distribution (TeX Live, MiKTeX, etc.)
-- Required packages: babel, geometry, graphicx, hyperref, listings, etc.
-
-### Architecture Diagrams
-- `docs/architecture.puml` - PlantUML system architecture diagram
-- `docs/database_erd.puml` - PlantUML database ERD diagram
-
 ## 📸 Screenshots
 
 ### Home page with product catalog
